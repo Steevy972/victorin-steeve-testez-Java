@@ -5,6 +5,7 @@ import com.parkit.parkingsystem.model.Ticket;
 
 public class FareCalculatorService {
 
+    private static final double remise =0.95;
  
 
 
@@ -21,46 +22,38 @@ public class FareCalculatorService {
 
         //TODO: Some tests are failing here. Need to check if this logic is correct
         double duration = (outHour - inHour)/(60*60*1000);
-        double remise = 1;
         
-         if(duration<=(0.5)){
-            remise =0;} 
-         else{
-                if((duration > (0.50)) && (discount == true)){
-                    remise=0.95;}}
-
- 
-     
         
-     
+        if(duration<=(0.5)){
+            ticket.setPrice(0);
+            return;
+        } 
+        
 
 
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: 
             
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR*remise);
-           
-        
-            
-            break;
-            
-            
-            case BIKE: 
-               
-         
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR*remise);
+                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+           break;
+
+           case BIKE: 
+                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
          
              break;
             
           default: throw new IllegalArgumentException("Unkown Parking Type"); 
         }
+        if(discount){
+            ticket.setPrice(ticket.getPrice()*remise);
         }
+    }
     
     
       public void calculateFare(Ticket ticket){
   calculateFare(ticket,false);
    }
-    }
+}
   
 
 
