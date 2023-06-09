@@ -5,13 +5,10 @@ import com.parkit.parkingsystem.model.Ticket;
 
 public class FareCalculatorService {
 
-    private static final double remise =0.95;
+    public static final double REMISE =0.95;
  
-
-
     public void calculateFare(Ticket ticket, boolean discount){
-        
-        
+                
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
         }
@@ -21,8 +18,10 @@ public class FareCalculatorService {
        
 
         //TODO: Some tests are failing here. Need to check if this logic is correct
+        
         double duration = (outHour - inHour)/(60*60*1000);
         
+
         
         if(duration<=(0.5)){
             ticket.setPrice(0);
@@ -45,7 +44,7 @@ public class FareCalculatorService {
           default: throw new IllegalArgumentException("Unkown Parking Type"); 
         }
         if(discount){
-            ticket.setPrice(ticket.getPrice()*remise);
+            ticket.setPrice(ticket.getPrice()*REMISE);
         }
     }
     

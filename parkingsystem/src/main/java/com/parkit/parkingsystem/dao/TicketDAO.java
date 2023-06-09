@@ -75,8 +75,9 @@ public class TicketDAO {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
             ps.setDouble(1, ticket.getPrice());
-            ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
-            ps.setInt(3,ticket.getId());
+            ps.setTimestamp(2, ticket.getOutTime() != null ?  new Timestamp(ticket.getOutTime().getTime()) : null);
+            ps.setTimestamp(3, new Timestamp(ticket.getInTime().getTime()));
+            ps.setInt(4,ticket.getId());
             ps.execute();
             return true;
         }catch (Exception ex){
@@ -86,6 +87,8 @@ public class TicketDAO {
         }
         return false;
     }
+
+    
 public int getNbTicket(String vehicleRegNumber){
     Connection con = null;
     int nbTicket = 0;
@@ -106,9 +109,6 @@ public int getNbTicket(String vehicleRegNumber){
             dataBaseConfig.closeConnection(con);
             return nbTicket;
         }
-
-    
-
 }
 
 }
